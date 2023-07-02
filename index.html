@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playing with Ajax</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css" />
+</head>
+<body>
+   <button><a style="color:#fff;" href="create.html">create</a></button>
+    <table>
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Product Code</th>
+                <th>Unit Price</th>
+                <th>Qty</th>
+                <th>Total Price</th>
+                <th>Delete</th>
+                <th>Update</th>
+            </tr>
+        </thead>
+        <tbody id="itemList">
+
+        </tbody>
+    </table>
+    
+
+    <script src="js/axios.min.js"></script>
+    <script>
+      GetList();  
+      async function GetList(){
+        let res = await axios.get('https://crud.teamrabbil.com/api/v1/ReadProduct');
+        if(res.status==200){
+            let list=res.data['data'];
+            list.forEach(item => {
+                document.getElementById('itemList').innerHTML+= (`<tr>
+                        <td>${item['ProductName']}</td>
+                        <td>${item['ProductCode']}</td>
+                        <td>${item['UnitPrice']}</td>
+                        <td>${item['Qty']}</td>
+                        <td>${item['TotalPrice']}</td>
+                        <td><button onClick="deleteItem('${item['_id']}')">Delete</button></td>
+                        <td><button onClick="updateItem('${item['_id']}')">Update</button></td>
+
+                    </tr>`
+                )
+            });
+        }else{
+            console.log('error');
+        }
+      }
+
+
+
+      async function deleteItem(id){
+        let res=await axios.get(`https://crud.teamrabbil.com/api/v1/DeleteProduct/${id}`);
+        if(res.status==200){
+            alert('Deleted');
+            // location.reload(); //web page reload hobe //
+            document.getElementById('itemList').innerHTML= " "; //web page reload hobe na, delete hole faka hobe 
+            GetList(); 
+        }
+        else{
+            alert('Error');
+        }
+      }
+
+      async function updateItem(id){
+        window.location=`update.html?id=${id}`
+      }
+
+
+    </script>
+</body>
+
+
+</html>
+

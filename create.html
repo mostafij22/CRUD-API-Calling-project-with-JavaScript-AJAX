@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="column">
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName" placeholder="Product Name">
+
+                    <label for="productCode">Product Code</label>
+                    <input type="text" id="productCode" placeholder="Product Code">
+
+                    <label for="unitPrice">Unit Price</label>
+                    <input type="text" id="unitPrice" placeholder="Unit Price">
+
+                    <label for="qty">Qty</label>
+                    <input type="text" id="qty" placeholder="qty">
+
+                    <label for="totalPrice">Total Price</label>
+                    <input type="text" id="totalPrice" placeholder="Total Price">
+
+                    <label for="productImg">Product Img</label>
+                    <input type="text" id="productImg" placeholder="Product Img">
+
+                    <button onclick="createItem()">Create</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/axios.min.js"></script>
+        <script>
+            async function createItem(){
+                
+                let productName=document.getElementById('productName').value;
+                let productCode= document.getElementById('productCode').value;
+                let unitPrice= document.getElementById('unitPrice').value;
+                let qty= document.getElementById('qty').value;
+                let totalPrice = document.getElementById('totalPrice').value;
+                let productImg = document.getElementById('productImg').value;
+
+
+                let createOBJ={
+                                "Img":productImg,
+                                "ProductCode":productCode,
+                                "ProductName":productName,
+                                "Qty":qty,
+                                "TotalPrice":totalPrice,
+                                "UnitPrice":unitPrice
+                            }
+
+                let res=await axios.post(`https://crud.teamrabbil.com/api/v1/CreateProduct`,createOBJ)    
+                
+                if(res.status==200){
+                    alert('Created');
+                    window.location.href='index.html'
+                }
+                else{
+                    alert('error');
+                }
+            }
+        </script>
+
+    </body>
+</html>
+
